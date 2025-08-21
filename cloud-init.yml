@@ -1,9 +1,0 @@
-#cloud-config
-users:
-  - name: safalkon
-    groups: sudo
-    shell: /bin/bash
-    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-    ssh_authorized_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGRh1HlGs/tnXIktQb04kNyqODaT6YcnDGrHL9wDGvHB safalkon@yandex.ru
-

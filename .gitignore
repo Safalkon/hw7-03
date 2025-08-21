@@ -9,6 +9,9 @@
 *.tfstate.*
 
 terraform.tfvars
+
 test.yml
+
 cloud.UP.pdf
+
 cloud-init.yml
