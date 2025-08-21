@@ -1,27 +1,41 @@
-1. Создать сервисный аккаунт в облаке. Выдать права editor
-2. Выпустить авторизованный ключ для этого аккаунта и скачать его по пути ~/.authorized_key.json . 
-3. Вписать в переменные cloud_id и folder_id в variables.tf
-4. Изменить ssh-ключ в файле cloud-init.yml (ssh-keygen -t ed25519). cp terraformrc ~/.terraformrc
-5. terraform init && terraform apply
-6. rm ~/.ssh/known_hosts. Выполнить playbook ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./hosts.ini test.yml
-7. По окончании выполнить terraform destroy
+# Домашнее задание к занятию "`Ansible - часть 2`" - `Алексей Сафронов`
 
-https://www.jeffgeerling.com/blog/2022/using-ansible-playbook-ssh-bastion-jump-host
+### Задание 1
 
-Настройка доступа по ssh через ssh config: 
-~/.ssh/config
-```
-Host 89.169.142.236  #адрес вашего бастиона
-   User user
 
-Host 10.0.*
-        ProxyJump 89.169.142.236
-        User user
+1. ![Выполнение](img/1.png)
+2. ![Выполнение](img/2.png)
+3. ![Выполнение](img/3.png)
 
-Host *.ru-central1.internal
-        ProxyJump 89.169.142.236
-        User user
 
-```
+---
 
-Или более простой для понимания, но менее удобный для частого применения: ssh -J <jump server> <remote server>
+### Задание 2
+
+1. ![Выполнение](img/4.png)
+2. ![Выполнение](img/5.png)
+3. ![Выполнение](img/6.png)
+
+[nginx](install-nginx.yml)
+[check-nginx](check-nginx.yml)
+
+---
+
+### Задание 3
+
+1. ![Выполнение](img/7.png)
+   ![Выполнение](img/8.png)
+2. ![Выполнение](img/9.png)
+3. ![Выполнение](img/10.png)
+
+[install-mySQL](install-mySQL.yml)
+[check-mySQL](check-mySQL.yml)
+
+
+---
+
+### Задание 4
+
+1. ![Выполнение](img/11.png)
+2. ![Выполнение](img/12.png)
+3. ![Выполнение](img/13.png)
