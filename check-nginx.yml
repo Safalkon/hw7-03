@@ -1,0 +1,42 @@
+---
+- name: Check nginx
+  gather_facts: false
+  hosts: webservers
+  vars:
+    ansible_ssh_user: safalkon
+  become: yes
+
+  pre_tasks:
+    - name: Validating the ssh port is open and
+      wait_for:
+        host: "{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+        search_regex: OpenSSH
+  
+  tasks:
+    - name: Check nginx service status
+      command: systemctl is-active nginx
+      register: nginx_status
+      changed_when: false
+
+    - name: Check nginx version
+      command: nginx -v
+      register: nginx_version
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Verify nginx is listening on port 80
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 80
+        timeout: 10
+
+    - name: Display nginx status
+      debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          Status: {{ nginx_status.stdout }}
+          Version: {{ nginx_version.stderr | default('Unknown') }}

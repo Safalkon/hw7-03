@@ -1,0 +1,37 @@
+---
+- name: Check mysql
+  gather_facts: false
+  hosts: dataservers
+  vars:
+    ansible_ssh_user: safalkon
+  become: yes
+
+  pre_tasks:
+    - name: Validating the ssh port is open and
+      wait_for:
+        host: "{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+        search_regex: OpenSSH
+    
+  tasks:
+    - name: Check MySQL connection
+      mysql_query:
+        login_user: root
+        login_password: "root123"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        query: "SELECT 'OK' as status;"
+      register: mysql_check
+      changed_when: false
+
+    - name: Show MySQL status
+      debug:
+        msg: "MySQL Status: ✅ CONNECTED SUCCESSFULLY"
+      when: mysql_check is succeeded
+
+    - name: Show MySQL error
+      debug:
+        msg: "MySQL Status: ❌ CONNECTION FAILED"
+      when: mysql_check is failed

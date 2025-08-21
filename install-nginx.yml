@@ -1,0 +1,35 @@
+---
+- name: Install nginx
+  gather_facts: false
+  hosts: webservers
+  vars:
+    ansible_ssh_user: safalkon
+  become: yes
+
+  pre_tasks:
+    - name: Validating the ssh port is open and
+      wait_for:
+        host: "{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}"
+        port: 22
+        delay: 5
+        timeout: 300
+        state: started
+        search_regex: OpenSSH
+  
+  tasks:
+    - name: Install nginx
+      package:
+        name: nginx
+        state: present
+
+    - name: Start and enable nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create simple test page
+      copy:
+        content: "Привет, nginx работает!"
+        dest: /var/www/html/index.html
+        mode: '0644'
